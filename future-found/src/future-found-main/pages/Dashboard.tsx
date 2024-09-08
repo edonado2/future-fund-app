@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Drawer,
@@ -11,9 +11,10 @@ import {
   Card,
   CardContent,
   Button,
+  IconButton,
 } from '@mui/material';
 import { Pie } from 'react-chartjs-2';
-import { Home, AccountBalance, TrendingUp, Info } from '@mui/icons-material';
+import { Home, AccountBalance, TrendingUp, Info, Menu } from '@mui/icons-material';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 // Registering Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -28,7 +29,6 @@ const sidebarItems = [
 
 const drawerWidth = 240;
 
-// Sample Pie chart data (replace with real data)
 const pieData = {
   labels: ['Stocks', 'Bonds', 'Real Estate', 'Cash'],
   datasets: [
@@ -41,15 +41,54 @@ const pieData = {
 };
 
 export const Dashboard: React.FC = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
+      {/* Hamburger menu button */}
+      <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        onClick={handleDrawerToggle}
+        sx={{ ml: 2, display: { sm: 'none' } }}
+      >
+        <Menu />
+      </IconButton>
+
       {/* Sidebar */}
       <Drawer
         variant="permanent"
+        open={open}
+        onClose={handleDrawerToggle}
         sx={{
           width: drawerWidth,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          display: { xs: 'none', sm: 'block' },
+        }}
+      >
+        <List>
+          {sidebarItems.map((item, index) => (
+            <ListItem key={index}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+
+      {/* Temporary drawer for mobile */}
+      <Drawer
+        variant="temporary"
+        open={open}
+        onClose={handleDrawerToggle}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          [`& .MuiDrawer-paper`]: { width: drawerWidth },
         }}
       >
         <List>
