@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Typography,
   Grid,
   Card,
@@ -13,36 +8,14 @@ import {
   Button,
   IconButton,
 } from '@mui/material';
-import { Pie } from 'react-chartjs-2';
-import { Home, AccountBalance, TrendingUp, Info, Menu } from '@mui/icons-material';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Menu } from '@mui/icons-material';
+import { SidebarDashboard, SidearMobile, Graph } from '../components';
+
 // Registering Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-// Sidebar navigation items
-const sidebarItems = [
-  { text: 'Home', icon: <Home /> },
-  { text: 'Portfolio', icon: <AccountBalance /> },
-  { text: 'Trends', icon: <TrendingUp /> },
-  { text: 'Advice', icon: <Info /> },
-];
-
-const drawerWidth = 240;
-
-const pieData = {
-  labels: ['Stocks', 'Bonds', 'Real Estate', 'Cash'],
-  datasets: [
-    {
-      label: 'Asset Allocation',
-      data: [40, 20, 25, 15],
-      backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726', '#FF7043'],
-    },
-  ],
-};
-
 export const Dashboard: React.FC = () => {
   const [open, setOpen] = useState(false);
-
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
@@ -59,48 +32,11 @@ export const Dashboard: React.FC = () => {
         <Menu />
       </IconButton>
 
-      {/* Sidebar */}
-      <Drawer
-        variant="permanent"
-        open={open}
-        onClose={handleDrawerToggle}
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-          display: { xs: 'none', sm: 'block' },
-        }}
-      >
-        <List>
-          {sidebarItems.map((item, index) => (
-            <ListItem key={index}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-
-      {/* Temporary drawer for mobile */}
-      <Drawer
-        variant="temporary"
-        open={open}
-        onClose={handleDrawerToggle}
-        sx={{
-          display: { xs: 'block', sm: 'none' },
-          [`& .MuiDrawer-paper`]: { width: drawerWidth },
-        }}
-      >
-        <List>
-          {sidebarItems.map((item, index) => (
-            <ListItem key={index}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-
+      {/* Sidebar for desktop */}
+      <SidebarDashboard open={open} handleDrawerToggle={handleDrawerToggle} />
+      {/* Sidebar for mobile */}
+      <SidearMobile open={open} handleDrawerToggle={handleDrawerToggle} />
+      
       {/* Main content area */}
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
@@ -142,16 +78,8 @@ export const Dashboard: React.FC = () => {
 
           {/* Graph section */}
           <Grid item xs={12} md={8}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Portfolio Asset Allocation</Typography>
-                <Box sx={{ width: '100%', height: '300px' }}>
-                  <Pie data={pieData} />
-                </Box>
-              </CardContent>
-            </Card>
+            <Graph/>
           </Grid>
-
           {/* Action Button */}
           <Grid item xs={12} md={4}>
             <Card>
