@@ -20,7 +20,7 @@ export const SidebarDashboard: React.FC<SidebarDashboardProps> = ({ open, handle
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', padding: 3},
           display: { xs: 'none', sm: 'block' },
         }}
       >

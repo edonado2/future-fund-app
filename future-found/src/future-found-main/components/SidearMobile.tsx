@@ -20,7 +20,7 @@ export const SidearMobile: React.FC<SidearMobileProps> = ({ open, handleDrawerTo
         onClose={handleDrawerToggle}
         sx={{
           display: { xs: 'block', sm: 'none' },
-          [`& .MuiDrawer-paper`]: { width: drawerWidth },
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, padding:3},
         }}
       >
         <List>
